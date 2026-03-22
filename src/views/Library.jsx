@@ -68,7 +68,35 @@ export default function Library({ onOpenBook }) {
   const toastTimerRef = useRef(null)
 
   useEffect(() => {
-    setBooks(getBooks())
+    const localBooks = getBooks()
+    setBooks(localBooks)
+
+    // Load preset books from public/books/manifest.json
+    fetch('/books/manifest.json')
+      .then(r => r.json())
+      .then(manifest => {
+        const localIds = new Set(localBooks.map(b => b.id))
+        const presetBooks = manifest
+          .filter(p => !localIds.has(p.id))
+          .map(p => ({
+            ...p,
+            url: `/books/${encodeURIComponent(p.filename)}`,
+            preset: true,
+            progress: 0,
+            location: null,
+            lastRead: null,
+            addedAt: 0,
+            fileSize: 0,
+            cover: null,
+          }))
+        if (presetBooks.length > 0) {
+          setBooks(prev => {
+            const ids = new Set(prev.map(b => b.id))
+            return [...prev, ...presetBooks.filter(b => !ids.has(b.id))]
+          })
+        }
+      })
+      .catch(() => {}) // no manifest = no preset books
   }, [])
 
   const showToast = useCallback((msg) => {
@@ -154,7 +182,7 @@ export default function Library({ onOpenBook }) {
   const deleteBook = async (e, bookId) => {
     e.stopPropagation()
     const book = books.find(b => b.id === bookId)
-    if (!book) return
+    if (!book || book.preset) return
     if (!confirm(`Remove "${book.title}" from your library?`)) return
     await deleteBookFile(bookId)
     const updated = books.filter(b => b.id !== bookId)

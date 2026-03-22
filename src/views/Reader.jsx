@@ -37,14 +37,14 @@ export default function Reader({ book, onClose }) {
   const viewerRef = useRef(null)
   const toastTimerRef = useRef(null)
 
-  // Load book file from IndexedDB
+  // Load book file from URL (preset) or IndexedDB (uploaded)
   useEffect(() => {
     setFileLoading(true)
-    getBookFile(book.id)
-      .then((data) => {
-        if (!data) { setFileError('Book file not found.'); return }
-        setFileData(data)
-      })
+    const load = book.url
+      ? fetch(book.url).then(r => { if (!r.ok) throw new Error(); return r.arrayBuffer() })
+      : getBookFile(book.id).then(data => { if (!data) throw new Error('not found'); return data })
+    load
+      .then((data) => setFileData(data))
       .catch(() => setFileError('Failed to load book file.'))
       .finally(() => setFileLoading(false))
 
