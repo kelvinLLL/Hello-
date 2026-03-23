@@ -25,12 +25,23 @@ export default function App() {
   }
 
   return (
-    <div className="app">
-      {view === 'library' ? (
-        <Library onOpenBook={openBook} />
-      ) : (
-        <Reader book={currentBook} onClose={closeBook} />
-      )}
+    <div className="site-shell">
+      <header className="site-chrome">
+        <a className="site-chrome-brand" href="/">kelvin11888.blog</a>
+        <nav className="site-chrome-nav">
+          <a href="/book-reader/" aria-current="page">Book Reader</a>
+          <a href="/daily-nuance/">Daily Nuance</a>
+        </nav>
+      </header>
+      <div className="site-shell-body">
+        <div className="app">
+          {view === 'library' ? (
+            <Library onOpenBook={openBook} />
+          ) : (
+            <Reader book={currentBook} onClose={closeBook} />
+          )}
+        </div>
+      </div>
     </div>
   )
 }

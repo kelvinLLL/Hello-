@@ -2,6 +2,8 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { getBooks, saveBooks, saveBookFile, deleteBookFile } from '../db.js'
 import BookCard from '../components/BookCard.jsx'
 
+const basePath = import.meta.env.BASE_URL
+
 // Generate a gradient cover placeholder from book title
 function titleToGradient(title = '') {
   const colors = [
@@ -72,7 +74,7 @@ export default function Library({ onOpenBook }) {
     setBooks(localBooks)
 
     // Load preset books from public/books/manifest.json
-    fetch('/books/manifest.json')
+    fetch(`${basePath}books/manifest.json`)
       .then(r => r.json())
       .then(manifest => {
         const localIds = new Set(localBooks.map(b => b.id))
@@ -80,7 +82,7 @@ export default function Library({ onOpenBook }) {
           .filter(p => !localIds.has(p.id))
           .map(p => ({
             ...p,
-            url: `/books/${encodeURIComponent(p.filename)}`,
+            url: `${basePath}books/${encodeURIComponent(p.filename)}`,
             preset: true,
             progress: 0,
             location: null,

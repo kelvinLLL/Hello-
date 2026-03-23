@@ -109,7 +109,65 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-#root, .app { height: 100%; }
+#root { min-height: 100%; }
+
+.site-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-chrome {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+[data-theme="dark"] .site-chrome {
+  background: rgba(15,23,42,0.82);
+}
+[data-theme="sepia"] .site-chrome {
+  background: rgba(250,247,240,0.84);
+}
+
+.site-chrome-brand {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.site-chrome-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.site-chrome-nav a {
+  padding: 8px 12px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-2);
+}
+
+.site-chrome-nav a[aria-current="page"] {
+  color: var(--accent-hover);
+  border-color: var(--accent-dim);
+  background: var(--accent-light);
+}
+
+.site-shell-body,
+.app {
+  flex: 1;
+  min-height: 0;
+}
 
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
