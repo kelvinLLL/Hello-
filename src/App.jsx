@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Library from './views/Library.jsx'
 import Reader from './views/Reader.jsx'
+import { shouldShowSiteChrome } from './mobileReaderShell.js'
 
 export default function App() {
   const [view, setView] = useState('library')
@@ -25,14 +26,16 @@ export default function App() {
   }
 
   return (
-    <div className="site-shell">
-      <header className="site-chrome">
-        <a className="site-chrome-brand" href="/">kelvin11888.blog</a>
-        <nav className="site-chrome-nav">
-          <a href="/book-reader/" aria-current="page">Book Reader</a>
-          <a href="/daily-nuance/">Daily Nuance</a>
-        </nav>
-      </header>
+    <div className={`site-shell ${view === 'reader' ? 'reader-active' : ''}`}>
+      {shouldShowSiteChrome(view) && (
+        <header className="site-chrome">
+          <a className="site-chrome-brand" href="/">kelvin11888.blog</a>
+          <nav className="site-chrome-nav">
+            <a href="/book-reader/" aria-current="page">Book Reader</a>
+            <a href="/daily-nuance/">Daily Nuance</a>
+          </nav>
+        </header>
+      )}
       <div className="site-shell-body">
         <div className="app">
           {view === 'library' ? (
