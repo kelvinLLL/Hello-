@@ -700,6 +700,9 @@ body {
   justify-content: center;
   color: var(--text-2);
   font-size: 18px;
+  text-decoration: none;
+  background: transparent;
+  border: 0;
   transition: all var(--t-fast);
   flex-shrink: 0;
 }

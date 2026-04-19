@@ -26,6 +26,17 @@ export default function Toolbar({
 
       <div className="toolbar-divider" />
 
+      <a
+        className="toolbar-btn"
+        href="/"
+        title="Back to kelvin.dev"
+        aria-label="Back to site"
+      >
+        ⌂
+      </a>
+
+      <div className="toolbar-divider" />
+
       {/* TOC */}
       <button
         className={`toolbar-btn ${tocOpen ? 'active' : ''}`}
