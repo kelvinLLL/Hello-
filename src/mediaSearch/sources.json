@@ -52,6 +52,80 @@
       }
     },
     {
+      "id": "omdb",
+      "name": "OMDB",
+      "type": "movie",
+      "enabled": true,
+      "requiresKey": true,
+      "keyName": "omdb_api_key",
+      "url": "https://www.omdbapi.com/?s={query}&apikey={key}",
+      "parse": {
+        "resultsPath": "Search",
+        "fields": {
+          "id": "imdbID",
+          "title": "Title",
+          "year": "Year",
+          "rating": null,
+          "ratingMax": 10,
+          "voteCount": null,
+          "overview": null,
+          "poster": "Poster",
+          "posterBase": null,
+          "popularity": null,
+          "genre": "Type"
+        }
+      }
+    },
+    {
+      "id": "tvmaze",
+      "name": "TVmaze",
+      "type": "tv",
+      "enabled": true,
+      "requiresKey": false,
+      "url": "https://api.tvmaze.com/search/shows?q={query}",
+      "parse": {
+        "resultsPath": null,
+        "resultUnwrap": "show",
+        "fields": {
+          "id": "id",
+          "title": "name",
+          "year": "premiered",
+          "rating": "rating.average",
+          "ratingMax": 10,
+          "voteCount": null,
+          "overview": "summary",
+          "poster": "image.medium",
+          "posterBase": null,
+          "popularity": "weight",
+          "genre": "genres"
+        }
+      }
+    },
+    {
+      "id": "jikan",
+      "name": "MyAnimeList",
+      "type": "tv",
+      "enabled": true,
+      "requiresKey": false,
+      "url": "https://api.jikan.moe/v4/anime?q={query}&limit=20&sfw=true",
+      "parse": {
+        "resultsPath": "data",
+        "fields": {
+          "id": "mal_id",
+          "title": "title",
+          "year": "year",
+          "rating": "score",
+          "ratingMax": 10,
+          "voteCount": "scored_by",
+          "overview": "synopsis",
+          "poster": "images.jpg.image_url",
+          "posterBase": null,
+          "popularity": "members",
+          "genre": "genres"
+        }
+      }
+    },
+    {
       "id": "itunes_movies",
       "name": "iTunes 电影",
       "type": "movie",
@@ -96,6 +170,30 @@
           "posterBase": null,
           "popularity": null,
           "genre": "primaryGenreName"
+        }
+      }
+    },
+    {
+      "id": "bilibili",
+      "name": "B站",
+      "type": "tv",
+      "enabled": true,
+      "requiresKey": false,
+      "url": "/api/bilibili?q={query}",
+      "parse": {
+        "resultsPath": "results",
+        "fields": {
+          "id": "season_id",
+          "title": "title",
+          "year": "year",
+          "rating": "rating",
+          "ratingMax": 10,
+          "voteCount": "followers",
+          "overview": "styles",
+          "poster": "cover",
+          "posterBase": null,
+          "popularity": "order",
+          "genre": "styles"
         }
       }
     }

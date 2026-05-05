@@ -8,6 +8,11 @@ const TYPE_FILTERS = [
   { value: 'tv', label: '剧集' },
 ]
 
+const KEY_LABELS = {
+  tmdb_api_key: { label: 'TMDB API Key', hint: 'themoviedb.org/settings/api' },
+  omdb_api_key: { label: 'OMDB API Key', hint: 'omdbapi.com/apikey.aspx' },
+}
+
 export default function MediaSearch() {
   const [query, setQuery] = useState('')
   const [typeFilter, setTypeFilter] = useState('all')
@@ -15,46 +20,41 @@ export default function MediaSearch() {
   const [loading, setLoading] = useState(false)
   const [searched, setSearched] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
-  const [apiKeyInput, setApiKeyInput] = useState(loadApiKeys().tmdb_api_key || '')
-  const [keySaved, setKeySaved] = useState(false)
+  const [keyInputs, setKeyInputs] = useState(() => {
+    const stored = loadApiKeys()
+    return { tmdb_api_key: stored.tmdb_api_key || '', omdb_api_key: stored.omdb_api_key || '' }
+  })
+  const [savedKey, setSavedKey] = useState(null)
   const abortRef = useRef(null)
 
   const runSearch = useCallback(async (q, type) => {
     if (!q.trim()) return
     if (abortRef.current) abortRef.current()
-
     setLoading(true)
     setSearched(true)
     setResults([])
-
     let cancelled = false
     abortRef.current = () => { cancelled = true }
-
     const data = await searchMedia(q, type)
-    if (!cancelled) {
-      setResults(data)
-      setLoading(false)
-    }
+    if (!cancelled) { setResults(data); setLoading(false) }
   }, [])
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    runSearch(query, typeFilter)
-  }
+  const handleSubmit = (e) => { e.preventDefault(); runSearch(query, typeFilter) }
 
   const handleTypeChange = (type) => {
     setTypeFilter(type)
     if (searched) runSearch(query, type)
   }
 
-  const handleSaveKey = () => {
-    saveApiKey('tmdb_api_key', apiKeyInput)
-    setKeySaved(true)
-    setTimeout(() => setKeySaved(false), 2000)
+  const handleSaveKey = (keyName) => {
+    saveApiKey(keyName, keyInputs[keyName])
+    setSavedKey(keyName)
+    setTimeout(() => setSavedKey(null), 2000)
   }
 
   const sources = getSourceStatus()
   const activeCount = sources.filter(s => s.active).length
+  const keySources = sources.filter(s => s.requiresKey)
 
   return (
     <div className="ms-root">
@@ -64,54 +64,52 @@ export default function MediaSearch() {
             <h1 className="ms-title">影视搜索</h1>
             <p className="ms-subtitle">
               并发检索多个数据源 · 综合质量评分
-              <span className="ms-source-badge">{activeCount} 个数据源</span>
+              <span className="ms-source-badge">{activeCount} / {sources.length} 个数据源</span>
             </p>
           </div>
-          <button
-            className="ms-settings-btn"
-            onClick={() => setShowSettings(s => !s)}
-            aria-label="设置"
-          >
-            ⚙
-          </button>
+          <button className="ms-settings-btn" onClick={() => setShowSettings(s => !s)} aria-label="设置">⚙</button>
         </div>
 
         {showSettings && (
           <div className="ms-settings-panel">
-            <h3 className="ms-settings-title">数据源配置</h3>
+            <h3 className="ms-settings-title">数据源状态</h3>
             <div className="ms-source-list">
               {sources.map(s => (
                 <div key={s.id} className="ms-source-item">
                   <span className={`ms-source-dot ${s.active ? 'active' : 'inactive'}`} />
                   <span>{s.name}</span>
-                  <span className="ms-source-status">{s.active ? '已启用' : '需要 API Key'}</span>
+                  <span className="ms-source-status">{s.active ? '已启用' : '需要 Key'}</span>
                 </div>
               ))}
             </div>
-            <div className="ms-key-row">
-              <label className="ms-key-label">
-                TMDB API Key
-                <a
-                  href="https://www.themoviedb.org/settings/api"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="ms-key-link"
-                >免费获取 →</a>
-              </label>
-              <div className="ms-key-input-row">
-                <input
-                  type="password"
-                  className="ms-key-input"
-                  value={apiKeyInput}
-                  onChange={e => setApiKeyInput(e.target.value)}
-                  placeholder="粘贴你的 TMDB v3 API Key"
-                />
-                <button className="ms-key-save" onClick={handleSaveKey}>
-                  {keySaved ? '✓ 已保存' : '保存'}
-                </button>
-              </div>
-              <p className="ms-key-hint">Key 仅存储在本地 localStorage，不会上传。</p>
-            </div>
+
+            <h3 className="ms-settings-title" style={{ marginTop: '16px' }}>API Keys</h3>
+            {keySources.map(s => {
+              const meta = KEY_LABELS[s.keyName] || { label: s.keyName, hint: '' }
+              return (
+                <div key={s.keyName} className="ms-key-row" style={{ marginBottom: '12px' }}>
+                  <label className="ms-key-label">
+                    {meta.label}
+                    <a href={`https://${meta.hint}`} target="_blank" rel="noreferrer" className="ms-key-link">
+                      免费获取 →
+                    </a>
+                  </label>
+                  <div className="ms-key-input-row">
+                    <input
+                      type="password"
+                      className="ms-key-input"
+                      value={keyInputs[s.keyName] || ''}
+                      onChange={e => setKeyInputs(k => ({ ...k, [s.keyName]: e.target.value }))}
+                      placeholder={`粘贴 ${meta.label}`}
+                    />
+                    <button className="ms-key-save" onClick={() => handleSaveKey(s.keyName)}>
+                      {savedKey === s.keyName ? '✓ 已保存' : '保存'}
+                    </button>
+                  </div>
+                </div>
+              )
+            })}
+            <p className="ms-key-hint">Key 仅存储在本地 localStorage，不会上传。B站无需 Key。</p>
           </div>
         )}
 
@@ -156,8 +154,8 @@ export default function MediaSearch() {
           <div className="ms-status">
             <p className="ms-empty-icon">🎬</p>
             <p>未找到相关影视内容</p>
-            {activeCount < 4 && (
-              <p className="ms-hint">提示：配置 TMDB API Key 可获得更多结果</p>
+            {activeCount < sources.length && (
+              <p className="ms-hint">配置更多 API Key 可扩大搜索范围</p>
             )}
           </div>
         )}
@@ -176,14 +174,16 @@ export default function MediaSearch() {
             <div className="ms-welcome-inner">
               <p className="ms-welcome-icon">🎥</p>
               <h2>发现优质影视</h2>
-              <p>同时搜索 iTunes、TMDB 等多个数据库<br />综合评分、评价数量、热度自动排序</p>
+              <p>同时搜索 {sources.length} 个数据库<br />综合评分、评价数量、热度自动排序</p>
               <div className="ms-arch-note">
-                <h3>架构说明 — 借鉴 Sherlock / Maigret 模式</h3>
+                <h3>当前数据源</h3>
                 <ul>
-                  <li><strong>sources.json</strong> — 数据源配置文件（类比 Sherlock 的 data.json）</li>
-                  <li><strong>并发 Promise.all</strong> — 同时查询所有启用的数据源</li>
-                  <li><strong>去重合并</strong> — 同名结果保留质量分最高的版本</li>
-                  <li><strong>质量分</strong> — 评分 + 评价数 + 上映年份 + 热度综合计算</li>
+                  {sources.map(s => (
+                    <li key={s.id}>
+                      <span className={`ms-source-dot ${s.active ? 'active' : 'inactive'}`} style={{ display: 'inline-block', marginRight: '6px' }} />
+                      <strong>{s.name}</strong> · {s.type === 'movie' ? '电影' : '剧集'} · {s.active ? '已启用' : '需要 Key'}
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
