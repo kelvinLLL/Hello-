@@ -196,6 +196,54 @@
           "genre": "styles"
         }
       }
+    },
+    {
+      "id": "douban",
+      "name": "豆瓣",
+      "type": "movie",
+      "enabled": true,
+      "requiresKey": false,
+      "url": "/api/douban?q={query}",
+      "parse": {
+        "resultsPath": "results",
+        "fields": {
+          "id": "id",
+          "title": "title",
+          "year": "year",
+          "rating": "rating",
+          "ratingMax": 10,
+          "voteCount": null,
+          "overview": "overview",
+          "poster": "poster",
+          "posterBase": null,
+          "popularity": null,
+          "genre": "genre"
+        }
+      }
+    },
+    {
+      "id": "weibo",
+      "name": "微博",
+      "type": "tv",
+      "enabled": true,
+      "requiresKey": false,
+      "url": "/api/weibo?q={query}",
+      "parse": {
+        "resultsPath": "results",
+        "fields": {
+          "id": "id",
+          "title": "title",
+          "year": "year",
+          "rating": "rating",
+          "ratingMax": 10,
+          "voteCount": null,
+          "overview": "overview",
+          "poster": "poster",
+          "posterBase": null,
+          "popularity": null,
+          "genre": "genre"
+        }
+      }
     }
   ]
 }
