@@ -1,0 +1,103 @@
+{
+  "version": "1.0",
+  "sources": [
+    {
+      "id": "tmdb_movies",
+      "name": "TMDB 电影",
+      "type": "movie",
+      "enabled": true,
+      "requiresKey": true,
+      "keyName": "tmdb_api_key",
+      "url": "https://api.themoviedb.org/3/search/movie?api_key={key}&query={query}&language=zh-CN&include_adult=false",
+      "parse": {
+        "resultsPath": "results",
+        "fields": {
+          "id": "id",
+          "title": "title",
+          "year": "release_date",
+          "rating": "vote_average",
+          "ratingMax": 10,
+          "voteCount": "vote_count",
+          "overview": "overview",
+          "poster": "poster_path",
+          "posterBase": "https://image.tmdb.org/t/p/w300",
+          "popularity": "popularity",
+          "genre": null
+        }
+      }
+    },
+    {
+      "id": "tmdb_tv",
+      "name": "TMDB 剧集",
+      "type": "tv",
+      "enabled": true,
+      "requiresKey": true,
+      "keyName": "tmdb_api_key",
+      "url": "https://api.themoviedb.org/3/search/tv?api_key={key}&query={query}&language=zh-CN&include_adult=false",
+      "parse": {
+        "resultsPath": "results",
+        "fields": {
+          "id": "id",
+          "title": "name",
+          "year": "first_air_date",
+          "rating": "vote_average",
+          "ratingMax": 10,
+          "voteCount": "vote_count",
+          "overview": "overview",
+          "poster": "poster_path",
+          "posterBase": "https://image.tmdb.org/t/p/w300",
+          "popularity": "popularity",
+          "genre": null
+        }
+      }
+    },
+    {
+      "id": "itunes_movies",
+      "name": "iTunes 电影",
+      "type": "movie",
+      "enabled": true,
+      "requiresKey": false,
+      "url": "https://itunes.apple.com/search?term={query}&media=movie&entity=movie&limit=25&lang=zh_cn",
+      "parse": {
+        "resultsPath": "results",
+        "fields": {
+          "id": "trackId",
+          "title": "trackName",
+          "year": "releaseDate",
+          "rating": "averageUserRating",
+          "ratingMax": 5,
+          "voteCount": "trackRatingCount",
+          "overview": "longDescription",
+          "poster": "artworkUrl100",
+          "posterBase": null,
+          "popularity": null,
+          "genre": "primaryGenreName"
+        }
+      }
+    },
+    {
+      "id": "itunes_tv",
+      "name": "iTunes 剧集",
+      "type": "tv",
+      "enabled": true,
+      "requiresKey": false,
+      "url": "https://itunes.apple.com/search?term={query}&media=tvShow&entity=tvSeason&limit=20&lang=zh_cn",
+      "parse": {
+        "resultsPath": "results",
+        "fields": {
+          "id": "collectionId",
+          "title": "collectionName",
+          "year": "releaseDate",
+          "rating": "averageUserRating",
+          "ratingMax": 5,
+          "voteCount": "trackCount",
+          "overview": "shortDescription",
+          "poster": "artworkUrl100",
+          "posterBase": null,
+          "popularity": null,
+          "genre": "primaryGenreName"
+        }
+      }
+    }
+  ]
+}
