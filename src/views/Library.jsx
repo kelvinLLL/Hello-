@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { getBooks, saveBooks, saveBookFile, deleteBookFile } from '../db.js'
 import BookCard from '../components/BookCard.jsx'
+import LibraryResourceShelf from './LibraryResourceShelf.jsx'
 
 const basePath = import.meta.env.BASE_URL
 
@@ -66,6 +67,7 @@ export default function Library({ onOpenBook }) {
   const [dragOver, setDragOver] = useState(false)
   const [loading, setLoading] = useState(false)
   const [toast, setToast] = useState(null)
+  const [readingResources, setReadingResources] = useState([])
   const fileInputRef = useRef(null)
   const toastTimerRef = useRef(null)
 
@@ -99,6 +101,13 @@ export default function Library({ onOpenBook }) {
         }
       })
       .catch(() => {}) // no manifest = no preset books
+
+    fetch(`${basePath}books/reading-resources.json`)
+      .then(r => (r.ok ? r.json() : []))
+      .then(resources => {
+        if (Array.isArray(resources)) setReadingResources(resources)
+      })
+      .catch(() => {}) // no resource shelf = no source cards
   }, [])
 
   const showToast = useCallback((msg) => {
@@ -261,6 +270,8 @@ export default function Library({ onOpenBook }) {
             </>
           )}
         </div>
+
+        <LibraryResourceShelf resources={readingResources} />
 
         {/* Recent books */}
         {recentBooks.length > 0 && (

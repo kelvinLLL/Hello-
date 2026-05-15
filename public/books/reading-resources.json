@@ -1,0 +1,97 @@
+[
+  {
+    "id": "resource_kitchen_yoshimoto",
+    "title": "厨房",
+    "originalTitle": "キッチン",
+    "author": "吉本芭娜娜 / 吉本ばなな",
+    "status": "待上传文件",
+    "languages": ["中文", "日本語"],
+    "note": "现代版权作品；这里先保存正版中文与日文来源。拥有 EPUB/PDF 后，用上方上传入口加入私人书库。",
+    "sources": [
+      {
+        "label": "豆瓣阅读：厨房（特精版）",
+        "url": "https://read.douban.com/ebook/399762817/",
+        "language": "中文",
+        "kind": "电子书",
+        "isbn": "9787532790142"
+      },
+      {
+        "label": "博客来：廚房",
+        "url": "https://www.books.com.tw/products/0010097358",
+        "language": "繁体中文",
+        "kind": "纸书",
+        "isbn": "9789571330211"
+      },
+      {
+        "label": "新潮社：キッチン",
+        "url": "https://www.shinchosha.co.jp/book/135913/",
+        "language": "日本語",
+        "kind": "文库",
+        "isbn": "9784101359137"
+      }
+    ]
+  },
+  {
+    "id": "resource_almost_transparent_blue_murakami",
+    "title": "无限近似于透明的蓝",
+    "originalTitle": "限りなく透明に近いブルー",
+    "author": "村上龙 / 村上龍",
+    "status": "待上传文件",
+    "languages": ["中文", "日本語"],
+    "note": "版权保护中的芥川奖作品；BookReader 只保留购买/馆藏线索，不预置全文。",
+    "sources": [
+      {
+        "label": "新华书店：无限近似于透明的蓝（精）",
+        "url": "https://item.xhsd.com/items/110000102303174",
+        "language": "简体中文",
+        "kind": "纸书",
+        "isbn": "9787532784806"
+      },
+      {
+        "label": "博客来：无限近似于透明的蓝",
+        "url": "https://www.books.com.tw/products/CN11197466",
+        "language": "简体中文",
+        "kind": "纸书",
+        "isbn": "9787532767670"
+      },
+      {
+        "label": "講談社：限りなく透明に近いブルー",
+        "url": "https://www.kodansha.co.jp/book/products/0000125835",
+        "language": "日本語",
+        "kind": "单行本",
+        "isbn": "9784061128231"
+      }
+    ]
+  },
+  {
+    "id": "resource_lost_care_hamanaka",
+    "title": "死亡护理师 / 失控的照护",
+    "originalTitle": "ロスト・ケア",
+    "author": "叶真中显 / 葉真中顕",
+    "status": "待上传文件",
+    "languages": ["中文", "日本語"],
+    "note": "你看的是电影版；它确实有小说原作。此处先记录小说原作与中文版本线索。",
+    "sources": [
+      {
+        "label": "三民：失控的照護（简体书）",
+        "url": "https://www.sanmin.com.tw/product/index/013588496",
+        "language": "简体中文",
+        "kind": "纸书",
+        "isbn": "9787541170164"
+      },
+      {
+        "label": "光文社 / 版元ドットコム：ロスト・ケア",
+        "url": "https://www.hanmoto.com/bd/isbn/9784334768782",
+        "language": "日本語",
+        "kind": "文库",
+        "isbn": "9784334768782"
+      },
+      {
+        "label": "映画『ロストケア』公式：原作情報",
+        "url": "https://lost-care.com/",
+        "language": "日本語",
+        "kind": "电影原作信息"
+      }
+    ]
+  }
+]

@@ -32,7 +32,7 @@ export default function App() {
           <a className="site-chrome-brand" href="/">kelvin11888.blog</a>
           <nav className="site-chrome-nav">
             <a href="/book-reader/" aria-current="page">Book Reader</a>
-            <a href="/daily-nuance/">Daily Nuance</a>
+            <a href="/reading-journal">Reading Journal</a>
           </nav>
         </header>
       )}
